@@ -14,3 +14,6 @@ There are 2 entry points:
 * [your url]/start -> Starts a checkout process with no customer info sent to Klarna
 * [your url]/prefill -> Starts a checkout process with customer info sent to Klarna via prefill
 
+Additionally you can run the following 
+* [your url]/capture/{orderid} -> Captures the funds for the order (where {orderid} is the Klarna order ID from the success URL)
+

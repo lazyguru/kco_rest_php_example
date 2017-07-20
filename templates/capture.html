@@ -1,0 +1,11 @@
+{% extends "layout.html" %}
+
+{% block body %}
+<h1>Capture</h1>
+<div>
+      Capture: {{ capture['capture_id'] }}<br/>
+      Reference: {{ capture['klarna_reference'] }}<br/>
+      Captured At: {{ capture['captured_at'] }}<br/>
+      Amount: ${{ capture['captured_amount'] / 100 }}<br/>
+</div>
+{% endblock %}

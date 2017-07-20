@@ -148,7 +148,7 @@ $app->get('/checkout/{id}', function ($request, $response, $args) {
     $order = $checkout->fetch();
 
     return $this->view->render($response, 'checkout.html', [
-        'snippet' => $order->offsetGet('html_snippet'),
+        'snippet'  => $order->offsetGet('html_snippet'),
         'messages' => $messages
     ]);
 })->setName('checkout');
@@ -185,3 +185,52 @@ $app->post('/push/{id}', function ($request, $response, $args) {
     return 'ok';
 })->setName('push');
 
+$app->get('/capture/{id}', function ($request, $response, $args) {
+    $settings = $this->get('settings')['klarna'];
+    $connector = Klarna\Rest\Transport\Connector::create(
+        $settings['merchantId'],
+        $settings['sharedSecret'],
+        \Klarna\Rest\Transport\ConnectorInterface::NA_TEST_BASE_URL
+    );
+
+    $order = new Klarna\Rest\OrderManagement\Order($connector, $args['id']);
+    $capture = $order->createCapture([
+        'captured_amount' => 10000,
+        'order_lines'     => [
+            [
+                'type'             => 'physical',
+                'reference'        => '123050',
+                'name'             => 'Tomatoes',
+                'quantity'         => 10,
+                'quantity_unit'    => 'kg',
+                'unit_price'       => 600,
+                'tax_rate'         => 2500,
+                'total_amount'     => 6000,
+                'total_tax_amount' => 1200
+            ],
+            [
+                'type'                  => 'physical',
+                'reference'             => '543670',
+                'name'                  => 'Bananas',
+                'quantity'              => 1,
+                'quantity_unit'         => 'bag',
+                'unit_price'            => 5000,
+                'tax_rate'              => 2500,
+                'total_amount'          => 4000,
+                'total_discount_amount' => 1000,
+                'total_tax_amount'      => 800
+            ]
+        ],
+        'shipping_info'   => [
+            [
+                'shipping_company' => 'USPS',
+                'tracking_number'  => '1Z.....'
+            ]
+        ]
+    ]);
+
+    return $this->view->render($response, 'capture.html', [
+        'capture'  => $capture->fetch()
+    ]);
+
+})->setName('capture');
