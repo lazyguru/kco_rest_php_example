@@ -173,8 +173,9 @@ $app->get('/success/{id}', function ($request, $response, $args) {
 
     $order = $checkout->fetch();
 
-    return $this->view->render($response, 'checkout.html', [
-        'snippet' => $order->offsetGet('html_snippet'),
+    return $this->view->render($response, 'success.html', [
+        'snippet'  => $order->offsetGet('html_snippet'),
+        'order_id' => $args['id'],
     ]);
 })->setName('success');
 

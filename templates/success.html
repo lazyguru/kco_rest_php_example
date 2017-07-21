@@ -1,0 +1,9 @@
+{% extends "layout.html" %}
+
+{% block body %}
+<h1>Success</h1>
+<hr/>
+{{ snippet|raw }}
+<hr/>
+<div align="center">Click <a href="/capture/{{ order_id }}">here</a> to capture funds for this order</div>
+{% endblock %}
