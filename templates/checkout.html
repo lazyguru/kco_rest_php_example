@@ -2,7 +2,8 @@
 
 {% block body %}
 <h1>Checkout</h1>
-<div align="center">
+<hr/>
+<div class="center" style="visibility: {{ has_messages }}">
     <div id="messages">
         <p>{{ messages["Prefill"][0]|raw }}</p>
     </div>

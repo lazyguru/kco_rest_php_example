@@ -155,8 +155,9 @@ $app->get('/checkout/{id}', function ($request, $response, $args) {
     $order = $checkout->fetch();
 
     return $this->view->render($response, 'checkout.html', [
-        'snippet'  => $order->offsetGet('html_snippet'),
-        'messages' => $messages
+        'snippet'      => $order->offsetGet('html_snippet'),
+        'messages'     => $messages,
+        'has_messages' => ($messages ? 'visible' : 'hidden')
     ]);
 })->setName('checkout');
 
