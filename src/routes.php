@@ -1,8 +1,15 @@
 <?php
 // Routes
 
+$app->get('/', function ($request, $response, $args) {
+    return $this->view->render($response, 'index.html', []);;
+});
 $app->get('/terms', function ($request, $response, $args) {
     return 'These are terms';
+});
+$app->get('/info', function ($request, $response, $args) {
+    /** @noinspection ForgottenDebugOutputInspection */
+    return phpinfo();
 });
 $app->get('/start', function ($request, $response, $args) {
     $settings = $this->get('settings')['klarna'];

@@ -9,11 +9,7 @@
 * Make sure to deploy somewhere publicly accessible with SSL
 
 ## Running
-There are 2 entry points:
-
-* [your url]/start -> Starts a checkout process with no customer info sent to Klarna
-* [your url]/prefill -> Starts a checkout process with customer info sent to Klarna via prefill
+* Run https://[your-publicly-available-hostname]/
 
 Additionally you can run the following 
-* [your url]/capture/{orderid} -> Captures the funds for the order (where {orderid} is the Klarna order ID from the success URL)
-
+* https://[your-publicly-available-hostname]/capture/{orderid} -> Captures the funds for the order (where {orderid} is the Klarna order ID from the success URL)
