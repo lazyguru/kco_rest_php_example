@@ -203,43 +203,49 @@ $app->get('/capture/{id}', function ($request, $response, $args) {
     );
 
     $order = new Klarna\Rest\OrderManagement\Order($connector, $args['id']);
-    $capture = $order->createCapture([
-        'captured_amount' => 10000,
-        'order_lines'     => [
-            [
-                'type'             => 'physical',
-                'reference'        => '123050',
-                'name'             => 'Tomatoes',
-                'quantity'         => 10,
-                'quantity_unit'    => 'kg',
-                'unit_price'       => 600,
-                'tax_rate'         => 2500,
-                'total_amount'     => 6000,
-                'total_tax_amount' => 1200
+    $captures = [];
+    try {
+        $capture = $order->createCapture([
+            'captured_amount' => 1000,
+            'order_lines'     => [
+                [
+                    'type'             => 'physical',
+                    'reference'        => '123050',
+                    'name'             => 'Tomatoes',
+                    'quantity'         => 10,
+                    'quantity_unit'    => 'kg',
+                    'unit_price'       => 600,
+                    'tax_rate'         => 2500,
+                    'total_amount'     => 6000,
+                    'total_tax_amount' => 1200
+                ],
+                [
+                    'type'                  => 'physical',
+                    'reference'             => '543670',
+                    'name'                  => 'Bananas',
+                    'quantity'              => 1,
+                    'quantity_unit'         => 'bag',
+                    'unit_price'            => 5000,
+                    'tax_rate'              => 2500,
+                    'total_amount'          => 4000,
+                    'total_discount_amount' => 1000,
+                    'total_tax_amount'      => 800
+                ]
             ],
-            [
-                'type'                  => 'physical',
-                'reference'             => '543670',
-                'name'                  => 'Bananas',
-                'quantity'              => 1,
-                'quantity_unit'         => 'bag',
-                'unit_price'            => 5000,
-                'tax_rate'              => 2500,
-                'total_amount'          => 4000,
-                'total_discount_amount' => 1000,
-                'total_tax_amount'      => 800
+            'shipping_info'   => [
+                [
+                    'shipping_company' => 'USPS',
+                    'tracking_number'  => '1Z.....'
+                ]
             ]
-        ],
-        'shipping_info'   => [
-            [
-                'shipping_company' => 'USPS',
-                'tracking_number'  => '1Z.....'
-            ]
-        ]
-    ]);
+        ]);
+    } catch (\Klarna\Rest\Transport\Exception\ConnectorException $e) {
+        if ($e->getCode() == 403) { // Already captured, so refresh the order and get the previous capture
+        }
+    }
 
     return $this->view->render($response, 'capture.html', [
-        'capture'  => $capture->fetch()
+        'captures' => $order->fetch()['captures'],
+        'order'    => $order,
     ]);
-
 })->setName('capture');

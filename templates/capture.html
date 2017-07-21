@@ -1,11 +1,32 @@
 {% extends "layout.html" %}
 
 {% block body %}
-<h1>Capture</h1>
-<div>
-      Capture: {{ capture['capture_id'] }}<br/>
-      Reference: {{ capture['klarna_reference'] }}<br/>
-      Captured At: {{ capture['captured_at'] }}<br/>
-      Amount: ${{ capture['captured_amount'] / 100 }}<br/>
+<h1>Captures</h1>
+<hr/>
+<div class="center">
+<table>
+    <tr>
+        <th>Capture</th>
+        <th>Reference</th>
+        <th>Captured At</th>
+        <th>Amount</th>
+    </tr>
+    {% for capture in captures %}
+    <tr>
+        <td>{{ capture['capture_id'] }}</td>
+        <td>{{ capture['klarna_reference'] }}</td>
+        <td>{{ capture['captured_at'] }}</td>
+        <td class="right">${{ capture['captured_amount'] / 100 }}</td>
+    </tr>
+    {% endfor %}
+</table>
+<hr/>
+<b>Total Paid:</b> ${{ order['captured_amount'] / 100 }}<br/>
+<b>Total Due:</b> ${{ order['remaining_authorized_amount'] / 100 }}<br/>
+
+{% if order['remaining_authorized_amount'] != 0 %}
+<br/>
+<p><b>Hint:</b> <span style="font-style: italic;">Refresh the page to create additional captures until order is fully paid</span></p>
+{% endif %}
 </div>
 {% endblock %}
