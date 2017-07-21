@@ -2,10 +2,13 @@
 
 {% block body %}
 <h1>Welcome</h1>
-<ul>
-    <li><a href="/info">See PHPINFO</a></li>
-    <li><a href="/start">Start a new checkout</a></li>
-    <li><a href="/prefill">Start a new checkout with Prefill</a></li>
-</ul>
+<div style="width: 400px" class="center">
+    <hr/>
+    <ul>
+        <li><a href="/info">See PHPINFO</a></li>
+        <li><a href="/start">Start a new checkout</a></li>
+        <li><a href="/prefill">Start a new checkout with Prefill</a></li>
+    </ul>
+</div>
 {{ snippet|raw }}
 {% endblock %}
